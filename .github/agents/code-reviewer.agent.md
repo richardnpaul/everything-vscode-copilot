@@ -81,7 +81,7 @@ function processUsers(users) {
     for (const user of users) {
       if (user.active) {
         if (user.email) {
-          user.verified = true;  // mutation!
+          user.verified = true; // mutation!
           results.push(user);
         }
       }
@@ -94,8 +94,8 @@ function processUsers(users) {
 function processUsers(users) {
   if (!users) return [];
   return users
-    .filter(user => user.active && user.email)
-    .map(user => ({ ...user, verified: true }));
+    .filter((user) => user.active && user.email)
+    .map((user) => ({ ...user, verified: true }));
 }
 ```
 
@@ -126,10 +126,14 @@ useEffect(() => {
 
 ```tsx
 // BAD: Using index as key with reorderable list
-{items.map((item, i) => <ListItem key={i} item={item} />)}
+{
+  items.map((item, i) => <ListItem key={i} item={item} />);
+}
 
 // GOOD: Stable unique key
-{items.map(item => <ListItem key={item.id} item={item} />)}
+{
+  items.map((item) => <ListItem key={item.id} item={item} />);
+}
 ```
 
 ### Node.js/Backend Patterns (HIGH)
@@ -146,9 +150,11 @@ When reviewing backend code:
 
 ```typescript
 // BAD: N+1 query pattern
-const users = await db.query('SELECT * FROM users');
+const users = await db.query("SELECT * FROM users");
 for (const user of users) {
-  user.posts = await db.query('SELECT * FROM posts WHERE user_id = $1', [user.id]);
+  user.posts = await db.query("SELECT * FROM posts WHERE user_id = $1", [
+    user.id,
+  ]);
 }
 
 // GOOD: Single query with JOIN or batch
@@ -231,11 +237,12 @@ Adapt your review to the project's established patterns. When in doubt, match wh
 
 When reviewing AI-generated changes, prioritize:
 
-1. Behavioral regressions and edge-case handling
+1. Behavioural regressions and edge-case handling
 2. Security assumptions and trust boundaries
 3. Hidden coupling or accidental architecture drift
 4. Unnecessary model-cost-inducing complexity
 
 Cost-awareness check:
+
 - Flag workflows that escalate to higher-cost models without clear reasoning need.
 - Recommend defaulting to lower-cost tiers for deterministic refactors.
